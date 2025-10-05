@@ -1,0 +1,124 @@
+/* === 全域設定 === */
+h1 {
+  text-align: center;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #f9fafb;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+form {
+  background: #fff;
+  padding: 28px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  max-width: 720px;  /* 調寬整體容器 */
+  margin: 40px auto;
+}
+
+/* === 表單排版 === */
+form .row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* 每個欄位更寬 */
+  gap: 24px; /* 欄位間距增加 */
+}
+
+form div {
+  background: #f3f4f6; /* 淺灰底區分輸入區塊 */
+  padding: 16px 18px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+form label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+}
+
+form input:focus,
+form select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+}
+
+/* === 按鈕樣式 === */
+form button {
+  background: #3b82f6;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 22px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+form button:hover {
+  background: #2563eb;
+}
+
+form button:active {
+  transform: scale(0.97);
+}
+
+/* === 錯誤提示 === */
+.error {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+.result {
+  margin-top: 24px;
+  padding: 18px 20px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+  color: #065f46;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result p {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.result .heatmap {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 10px;
+  border: 1px solid #d1fae5;
+  margin: 0 auto;
+}
