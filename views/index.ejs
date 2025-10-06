@@ -3,38 +3,38 @@
 <form action="/search" method="post">
   <div class="row">
     <div>
-      <label for="lat">緯度 (lat)</label>
+      <label for="lat">緯度（lat）</label>
       <input id="lat" name="lat" type="number" step="0.001" value="<%= lat %>" required />
     </div>
     <div>
-      <label for="lon">經度 (lon)</label>
+      <label for="lon">經度（lon）</label>
       <input id="lon" name="lon" type="number" step="0.001" value="<%= lon %>" required />
     </div>
     <div>
-      <label for="range">範圍</label>
+      <label for="range">範圍（Radius）</label>
       <input id="range" name="range" type="number" step="1" max="1000" value="<%= range %>" required />
     </div>
     <div>
-      <label for="unit">單位</label>
+      <label for="unit">單位(Unit)</label>
       <select id="unit" name="unit" required>
         <option value="M" <%= unit === "M" ? "selected" : "" %>>公尺（Meter）</option>
         <option value="K" <%= unit === "K" ? "selected" : "" %>>公里（Kilometer）</option>
       </select>
     </div>
   </div>
-  <button type="submit" style="margin-top:12px;">查詢植物生長狀態</button>
+  <button type="submit" style="margin-top:12px;">查詢植物生長狀態（Search NDVI）</button>
   <% if (locals.error) { %><div class="error"><%= error %></div><% } %>
 </form>
 <% if (locals.image) { %>
   <div class="result">
     <img src="<%= image %>" alt="NDVI Heatmap" class="heatmap" />
     <% if (locals.image_date) { %>
-      <p>圖片日期: <%= image_date %></p>
+      <p>圖片日期（Image_Date）: <%= image_date %></p>
     <% } %>
     <% if (locals.ndvi_avg) { %>
-      <p>NDVI平均值: <%= ndvi_avg %></p>
-    <% } else { %>
-      <p>NDVI平均值: 0分</p>
+      <p>NDVI平均值（Average NDVI）: <%= ndvi_avg %></p>
+    <% } else if(!locals.ndvi_avg && locals.image) { %>
+      <p>NDVI平均值（Average NDVI）: 0分</p>
     <% } %>
   </div>
 <% } %>

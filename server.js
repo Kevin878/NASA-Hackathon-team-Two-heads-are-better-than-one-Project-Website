@@ -4,7 +4,7 @@ import axios from "axios";
 
 const app = express();
 const port = 3000;
-const API_BASE_URL = "https://ndvi-api-ogv4.onrender.com";
+const API_BASE_URL = "https://ndvi-api-wtsg.onrender.com";
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("public"));
