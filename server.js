@@ -11,13 +11,15 @@ app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.render("index.ejs", {
+    currentPath: "home",
     lat: "",
     lon: "",
     range: "",
     unit: "",
     image: "",
     image_date: "",
-    ndvi_avg: ""
+    ndvi_avg: "",
+    error: null,
   })
 });
 
@@ -26,7 +28,6 @@ app.post("/search", async (req, res) => {
   
   try {
     const result = await axios.get(`${API_BASE_URL}/ndvi_heatmap`, { 
-      // 邏輯正確：參數放在 params 內
       params: {
         lat: body.lat,
         lon: body.lon,
@@ -35,7 +36,6 @@ app.post("/search", async (req, res) => {
       }
     });
 
-    // *** 修正點 2：存取 API 回傳的資料必須使用 .data 屬性 ***
     const ndviData = result.data; 
 
     console.log("NDVI API 呼叫成功！");
@@ -43,29 +43,54 @@ app.post("/search", async (req, res) => {
     console.log(`熱力圖 Base64 字串長度: ${ndviData.ndvi_heatmap_png_base64.length}`);
 
     res.render("index.ejs", {
-        lat: body.lat,
-        lon: body.lon,
-        range: body.range,
-        unit: body.unit,
-        image: ndviData.ndvi_heatmap_png_base64,
-        image_date: ndviData.closest_image_date,
-        ndvi_avg: ndviData.mean_ndvi
+      currentPath: "home",
+      lat: body.lat,
+      lon: body.lon,
+      range: body.range,
+      unit: body.unit,
+      image: ndviData.ndvi_heatmap_png_base64,
+      image_date: ndviData.closest_image_date,
+      ndvi_avg: ndviData.mean_ndvi,
+      error: null,
     })
 
   } catch (error) {
-    // *** 修正點 1：捕獲並處理錯誤 (防止伺服器崩潰) ***
     console.error("呼叫 NDVI API 失敗:", error.message);
     
     // 如果 API 提供了詳細的錯誤響應，將其顯示給使用者
     if (error.response) {
       console.error("API 錯誤細節:", error.response.data);
-      res.status(error.response.status || 500).send(`API 錯誤: ${error.response.data.description || '未知錯誤'}`);
+      res.status(error.response.status || 500).render("index.ejs", {
+        currentPath: "home",
+        lat: body.lat,
+        lon: body.lon,
+        range: body.range,
+        unit: body.unit,
+        image: "",
+        image_date: "",
+        ndvi_avg: "",
+        error: error.response.data.description || "NDVI 服務回傳錯誤",
+      });
     } else {
       // 處理網路連線或 DNS 錯誤
-      res.status(503).send("無法連線到 NDVI 服務，請檢查網路連線。");
+      res.status(503).render("index.ejs", {
+        currentPath: "home",
+        lat: body.lat,
+        lon: body.lon,
+        range: body.range,
+        unit: body.unit,
+        image: "",
+        image_date: "",
+        ndvi_avg: "",
+        error: "無法連線到 NDVI 服務，請稍後再試。",
+      });
     }
   }
 });
+
+app.get("/ndvi", (req, res) => {
+  res.render("ndvi.ejs", { currentPath: "ndvi" });
+})
 
 app.listen(port, () => {
   console.log(`Listening Port ${port}`);
